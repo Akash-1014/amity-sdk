@@ -187,11 +187,38 @@
 //   );
 // };
 // export default App;
-import React from "react";
-import LiveStream from "./component/LiveStream";
+import "./styles.css";
+import { useState } from "react";
 
-const App = () => {
-  return <div><LiveStream/></div>;
-};
+import {
+  AmityUiKitProvider,
+  AmityUiKitSocial,
+  AmityUiKitChat
+} from "@amityco/ui-kit";
 
-export default App;
+import Login from "./component/Login";
+
+const apiKey = "b0efe85d3c88a1331a62891e550f1688845b8ab6ba34692f";
+
+export default function App() {
+  const [userId, setUserId] = useState();
+
+  return (
+    <div className="App">
+      {!userId ? (
+        <Login onSubmit={setUserId} />
+      ) : (
+        <AmityUiKitProvider
+          key={userId}
+          apiKey={apiKey}
+          apiEndpoint="https://api.eu.amity.co"
+          userId={userId}
+          displayName={userId}
+        >
+          <AmityUiKitChat />
+        </AmityUiKitProvider>
+      )}
+    </div>
+  );
+}
+
